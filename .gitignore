@@ -1,0 +1,6 @@
+/venv/
+venv/
+venv
+.venv
+
+__pycache__/working.cpython-310.pyc
