@@ -13,6 +13,11 @@ class Item(BaseModel):
     price: float
     brand: Optional[str] = None
 
+class UpdateItem(BaseModel):
+    name: Optional[str] = None
+    price: Optional[float] = None
+    brand: Optional[str] = None
+
 
 # @app.get('/')
 # def home():
@@ -67,5 +72,18 @@ def create_item(item_id:int, item:Item):
 def update_item(item_id:int, item:Item):
     if item_id not in inventory:
         return {'Error': 'Item ID does not exist'}
-    inventory[item_id].update(item)
+    if item.name != None:
+        inventory[item_id].name = item.name
+    if item.price != None:
+        inventory[item_id].price = item.price    
+    if item.brand != None:
+        inventory[item_id].brand = item.brand
     return inventory[item_id]
+
+
+@app.delete('/delete-item')
+def delete_item(item_id:int = Query(..., description= 'The Id or the item to delete',gt=0)):
+    if item_id not in inventory:
+        return {'Error':'ID does not exist'}
+    del inventory[item_id]
+    return {'success':'Item Deleted'}
